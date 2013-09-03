@@ -1,0 +1,8 @@
+#goal definition
+std_msgs/String mapyaml
+---
+#result definition
+std_msgs/String resultstring
+---
+#feedback
+std_msgs/UInt32 notused

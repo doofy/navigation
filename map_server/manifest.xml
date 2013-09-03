@@ -14,6 +14,9 @@
   <depend package="nav_msgs"/>
   <depend package="tf"/>
   <depend package="common_rosdeps" />
+  <depend package="actionlib"/>
+  <depend package="actionlib_msgs"/>
+  <depend package="std_msgs"/>
   <export>
      <cpp cflags="-I${prefix}/include `rosboost-cfg --cflags`" lflags="-Wl,-rpath,${prefix}/lib -L${prefix}/lib `rosboost-cfg --lflags thread`"/>
   </export>

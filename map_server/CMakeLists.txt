@@ -1,6 +1,13 @@
 cmake_minimum_required(VERSION 2.4.6 FATAL_ERROR)
 include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
+
+rosbuild_find_ros_package(actionlib_msgs)
+include(${actionlib_msgs_PACKAGE_PATH}/cmake/actionbuild.cmake)
+genaction()
+
 rosbuild_init()
+
+rosbuild_genmsg()
 
 rosbuild_add_library(image_loader src/image_loader.cpp)
 target_link_libraries(image_loader SDL SDL_image)
