@@ -28,6 +28,7 @@
  */
 
 /* Author: Brian Gerkey */
+/* Author: Michael Stypa <mstypa@uos.de> */
 
 #define USAGE "\nUSAGE: map_server <map.yaml>\n" \
               "  map.yaml: map description file\n" \
@@ -45,6 +46,7 @@
 #include "map_server/image_loader.h"
 #include "nav_msgs/MapMetaData.h"
 #include "yaml-cpp/yaml.h"
+#include "actionlib/server/simple_action_server.h"
 
 class MapServer
 {
@@ -52,6 +54,8 @@ class MapServer
     /** Trivial constructor */
     MapServer(const std::string& fname, double res)
     {
+      as = (n, "loadmap_as_name", boost::bind(&MapServer::action_callback, this, _1), true);
+
       std::string mapfname = "";   
       double origin[3];
       int negate;
@@ -153,12 +157,24 @@ class MapServer
       map_pub.publish( map_resp_.map );
     }
 
+    void executeCB(const map_server::loadmapActionGoalConstPtr &goal)
+    {
+      ROS_INFO("action callback");
+      //as.setSucceeded(result_);
+    }
+
   private:
     ros::NodeHandle n;
     ros::Publisher map_pub;
     ros::Publisher metadata_pub;
     ros::ServiceServer service;
     bool deprecated;
+
+    actionlib::SimpleActionServer<MapServer> as;
+    // create messages that are used to published feedback/result
+    map_server::loadmapActionGoal goal;
+    map_server::loadmapActionResult result;
+    map_server::loadmapActionFeedback feedback;
 
     /** Callback invoked when someone requests our service */
     bool mapCallback(nav_msgs::GetMap::Request  &req,
